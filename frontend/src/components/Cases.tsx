@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 const cases = [
   {
@@ -27,18 +28,22 @@ const cases = [
 
 export default function Cases() {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const titleRef = useScrollReveal<HTMLHeadingElement>()
+  const wrapperRef = useScrollReveal<HTMLDivElement>(true)
 
   const scroll = (dir: 'left' | 'right') => {
     if (!scrollRef.current) return
-    const cardWidth = 420
-    scrollRef.current.scrollBy({ left: dir === 'right' ? cardWidth : -cardWidth, behavior: 'smooth' })
+    scrollRef.current.scrollBy({ left: dir === 'right' ? 420 : -420, behavior: 'smooth' })
   }
 
   return (
     <section id="cases" className="py-24 px-6" style={{ backgroundColor: 'var(--color-dark)' }}>
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-white text-center mb-12">Наши кейсы</h2>
-        <div className="relative">
+        <h2 ref={titleRef} className="fade-up text-3xl font-bold text-white text-center mb-12">
+          Наши кейсы
+        </h2>
+
+        <div ref={wrapperRef} className="relative">
           {/* Left arrow */}
           <button
             onClick={() => scroll('left')}
@@ -60,7 +65,7 @@ export default function Cases() {
             {cases.map((c, i) => (
               <div
                 key={i}
-                className="flex-none snap-start rounded-xl overflow-hidden flex flex-col"
+                className="fade-up flex-none snap-start rounded-xl overflow-hidden flex flex-col"
                 style={{
                   minWidth: 320,
                   width: 'clamp(320px, 40vw, 420px)',

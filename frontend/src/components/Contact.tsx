@@ -2,6 +2,7 @@ import { useState, FormEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 export default function Contact() {
   const [name, setName] = useState('')
@@ -10,6 +11,11 @@ export default function Contact() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const titleRef = useScrollReveal<HTMLHeadingElement>()
+  const subtitleRef = useScrollReveal<HTMLParagraphElement>()
+  const formRef = useScrollReveal<HTMLFormElement>()
+  const successRef = useScrollReveal<HTMLDivElement>()
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -42,11 +48,11 @@ export default function Contact() {
   return (
     <section id="contacts" className="py-24 px-6" style={{ backgroundColor: '#0f1535' }}>
       <div className="max-w-2xl mx-auto text-center">
-        <h2 className="text-3xl font-bold text-white">Обсудим ваш проект?</h2>
-        <p className="text-gray-300 mt-4 text-lg">Оставьте заявку — свяжемся в течение часа</p>
+        <h2 ref={titleRef} className="fade-up text-3xl font-bold text-white">Обсудим ваш проект?</h2>
+        <p ref={subtitleRef} className="fade-up text-gray-300 mt-4 text-lg">Оставьте заявку — свяжемся в течение часа</p>
 
         {success ? (
-          <div className="mt-10 flex flex-col items-center gap-4">
+          <div ref={successRef} className="fade-up mt-10 flex flex-col items-center gap-4">
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
               <circle cx="28" cy="28" r="27" stroke="var(--color-accent)" strokeWidth="2" />
               <path d="M18 28l7 7 13-14" stroke="var(--color-accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -54,7 +60,7 @@ export default function Contact() {
             <p className="text-white text-xl font-medium">Спасибо! Свяжемся с вами в ближайшее время.</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-10 flex flex-col gap-4 text-left max-w-lg mx-auto">
+          <form ref={formRef} onSubmit={handleSubmit} className="fade-up mt-10 flex flex-col gap-4 text-left max-w-lg mx-auto">
             <Input
               placeholder="Ваше имя"
               required
@@ -84,16 +90,9 @@ export default function Contact() {
               type="submit"
               disabled={loading}
               className="w-full font-semibold text-base h-12 transition-all duration-200"
-              style={{
-                backgroundColor: 'var(--color-accent)',
-                color: 'var(--color-dark)',
-              }}
-              onMouseEnter={e => {
-                if (!loading) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#04cdd6'
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-accent)'
-              }}
+              style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-dark)' }}
+              onMouseEnter={e => { if (!loading) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#04cdd6' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-accent)' }}
             >
               {loading ? (
                 <span className="flex items-center gap-2">

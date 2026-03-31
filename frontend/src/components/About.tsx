@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 const stats = [
   { value: '5+', label: 'лет на рынке' },
@@ -13,6 +14,14 @@ const clients = [
 ]
 
 export default function About() {
+  const titleRef   = useScrollReveal<HTMLHeadingElement>()
+  const subtitleRef = useScrollReveal<HTMLParagraphElement>()
+  const statsRef   = useScrollReveal<HTMLDivElement>(true)
+  const marqueeRef = useScrollReveal<HTMLDivElement>()
+  const founderRef = useScrollReveal<HTMLDivElement>()
+  const vkRef      = useScrollReveal<HTMLDivElement>()
+  const btnRef     = useScrollReveal<HTMLDivElement>()
+
   const scrollToContacts = () => {
     document.getElementById('contacts')?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -20,17 +29,17 @@ export default function About() {
   return (
     <section id="about" className="py-24 px-6" style={{ backgroundColor: 'var(--color-dark)' }}>
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-white text-center">О нас</h2>
-        <p className="text-gray-300 text-lg text-center max-w-2xl mx-auto mt-4 leading-relaxed">
+        <h2 ref={titleRef} className="fade-up text-3xl font-bold text-white text-center">О нас</h2>
+        <p ref={subtitleRef} className="fade-up text-gray-300 text-lg text-center max-w-2xl mx-auto mt-4 leading-relaxed">
           Мы помогаем бизнесу увеличивать продажи и расти с помощью инструментов интернет-рекламы и маркетинга.
         </p>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
+        <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
           {stats.map((s, i) => (
             <div
               key={i}
-              className="rounded-xl p-6 text-center"
+              className="fade-up rounded-xl p-6 text-center"
               style={{ backgroundColor: 'var(--color-primary)' }}
             >
               <div className="text-4xl font-bold" style={{ color: 'var(--color-accent)' }}>{s.value}</div>
@@ -40,7 +49,7 @@ export default function About() {
         </div>
 
         {/* Marquee */}
-        <div className="mt-16 overflow-hidden">
+        <div ref={marqueeRef} className="fade-up mt-16 overflow-hidden">
           <div
             className="flex gap-4"
             style={{ animation: 'marquee 20s linear infinite', width: 'max-content' }}
@@ -58,7 +67,7 @@ export default function About() {
         </div>
 
         {/* Founder card */}
-        <div className="mt-16 max-w-xs mx-auto rounded-xl p-8 flex flex-col items-center text-center"
+        <div ref={founderRef} className="fade-up mt-16 max-w-xs mx-auto rounded-xl p-8 flex flex-col items-center text-center"
           style={{ backgroundColor: 'var(--color-primary)' }}>
           <div
             className="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold"
@@ -71,7 +80,7 @@ export default function About() {
         </div>
 
         {/* VK link */}
-        <div className="flex justify-center mt-8">
+        <div ref={vkRef} className="fade-up flex justify-center mt-8">
           <a
             href="https://vk.com/kvadrat_agency"
             target="_blank"
@@ -86,15 +95,11 @@ export default function About() {
           </a>
         </div>
 
-        <div className="flex justify-center mt-6">
+        <div ref={btnRef} className="fade-up flex justify-center mt-6">
           <Button
             onClick={scrollToContacts}
             className="font-semibold transition-all duration-200"
-            style={{
-              background: 'transparent',
-              border: '1px solid var(--color-accent)',
-              color: 'var(--color-accent)',
-            }}
+            style={{ background: 'transparent', border: '1px solid var(--color-accent)', color: 'var(--color-accent)' }}
             onMouseEnter={e => {
               (e.currentTarget as HTMLButtonElement).style.background = 'var(--color-accent)'
               ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-dark)'

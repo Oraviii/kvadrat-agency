@@ -1,3 +1,5 @@
+import { useScrollReveal } from '@/hooks/useScrollReveal'
+
 const Logo = () => (
   <div className="flex items-center gap-2">
     <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
@@ -11,6 +13,8 @@ const Logo = () => (
 )
 
 export default function Footer() {
+  const innerRef = useScrollReveal<HTMLDivElement>()
+
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -21,11 +25,9 @@ export default function Footer() {
       style={{ backgroundColor: 'var(--color-dark)', borderTop: '1px solid #1f2937' }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-          {/* Logo */}
+        <div ref={innerRef} className="fade-up flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <Logo />
 
-          {/* Nav */}
           <nav className="flex flex-wrap gap-6">
             {[
               { label: 'Услуги', id: 'services' },
@@ -43,13 +45,11 @@ export default function Footer() {
             ))}
           </nav>
 
-          {/* VK */}
           <a
             href="https://vk.com/kvadrat_agency"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm text-gray-400 transition-colors"
-            style={{ color: undefined }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-accent)')}
             onMouseLeave={e => (e.currentTarget.style.color = '')}
           >
